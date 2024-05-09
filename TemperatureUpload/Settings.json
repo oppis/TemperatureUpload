@@ -1,0 +1,18 @@
+{
+  "Settings": {
+    "InfluxDB": {
+      "WebAdress": "",
+      "Token": "",
+      "Org": "",
+      "Bucket": ""
+    },
+    "Sensor": [
+      {
+        "SensorTyp": null,
+        "SensorId": "",
+        "GpioPin": null,
+        "SensorName": ""
+      }
+    ]
+  }
+}
