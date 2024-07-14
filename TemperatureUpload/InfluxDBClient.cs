@@ -20,7 +20,7 @@ namespace TemperatureUpload
             try
             {
                 //Get Current Settings for InfluxDB
-                TemperatureUpload.Models.InfluxDB settingsInfluxDB = Program.SettingsRead.influxDB;
+                Models.InfluxDB settingsInfluxDB = Program.SettingsRead.InfluxDB;
                 
                 //Create Connection to InfluxDB
                 using var client = new InfluxDB.Client.InfluxDBClient(settingsInfluxDB.WebAddress, settingsInfluxDB.Token);

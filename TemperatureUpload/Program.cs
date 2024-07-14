@@ -14,9 +14,14 @@ namespace TemperatureUpload
 
             //Loop for reading
             foreach (Sensor currentSensor in SettingsRead.Sensor) 
-            { 
-                TemperatureModel currentTemperature = ReadSensor.GetSensorTemperatureData(currentSensor);
-                InfluxDBClient.SaveTemperatureData(currentTemperature);
+            {
+                for (int i = 0; i < 50; i++)
+                {
+                    TemperatureModel currentTemperature = ReadSensor.GetSensorTemperatureData(currentSensor);
+                    InfluxDBClient.SaveTemperatureData(currentTemperature);
+                    Thread.Sleep(2000);  
+                }
+
             }
         }
 

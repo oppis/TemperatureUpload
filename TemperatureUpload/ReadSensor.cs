@@ -36,6 +36,8 @@ namespace TemperatureUpload
                         RelativeHumidity humidityDHT21 = default;
                         Temperature temperatureDHT21 = default;
 
+                        Console.WriteLine("GPIO-PIN: " + sensor.GpioPin);
+
                         // GPIO Pin
                         using Dht21 dht = new(sensor.GpioPin);
                         

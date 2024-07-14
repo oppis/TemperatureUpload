@@ -2,7 +2,7 @@
 {
     public class Settings
     {
-        public InfluxDB influxDB {  get; set; } 
+        public InfluxDB InfluxDB {  get; set; } 
         public List<Sensor> Sensor { get; set; } 
     }
     public class InfluxDB
