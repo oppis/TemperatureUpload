@@ -15,10 +15,13 @@ namespace TemperatureUpload
             //Loop for reading
             foreach (Sensor currentSensor in SettingsRead.Sensor) 
             {
+                Console.WriteLine("Start des Durchlaufes der Sensoren!");
+
                 for (int i = 0; i < 50; i++)
                 {
                     TemperatureModel currentTemperature = ReadSensor.GetSensorTemperatureData(currentSensor);
-                    InfluxDBClient.SaveTemperatureData(currentTemperature);
+                    Console.WriteLine(currentTemperature.Temperature.ToString());
+                    //InfluxDBClient.SaveTemperatureData(currentTemperature);
                     Thread.Sleep(2000);  
                 }
 
@@ -30,9 +33,16 @@ namespace TemperatureUpload
         /// </summary>
         public static void InitializeSettings()
         {
-            string settingsJson = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Settings.json"));
+            Console.WriteLine("Es werden die Einstellungen geladen!");
+
+            string currentPath = Path.Combine(AppContext.BaseDirectory, "Settings.json");
+
+            Console.WriteLine($"{currentPath}");
+            string settingsJson = File.ReadAllText(currentPath);
 
             SettingsRead = JsonSerializer.Deserialize<Settings>(settingsJson);
+
+            Console.WriteLine("Es wurden die Einstellungen geladen!");
         }
     }
 }
