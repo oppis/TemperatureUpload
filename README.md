@@ -10,3 +10,4 @@ Save temperature values in InfluxDB
 | DHT12       | 3   |
 | DHT21       | 4   |
 | DHT22       | 5   |
+| Sht3x       | 6   |
