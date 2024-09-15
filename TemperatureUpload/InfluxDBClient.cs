@@ -17,31 +17,24 @@ namespace TemperatureUpload
         /// <param name="humidity">Humidity value emitted</param>
         public static async void SaveTemperatureData(TemperatureModel temperature)
         {
-            try
-            {
-                //Get Current Settings for InfluxDB
-                Models.InfluxDB settingsInfluxDB = Program.SettingsRead.InfluxDB;
+            //Get Current Settings for InfluxDB
+            Models.InfluxDB settingsInfluxDB = Program.SettingsRead.InfluxDB;
                 
-                //Create Connection to InfluxDB
-                using var client = new InfluxDB.Client.InfluxDBClient(settingsInfluxDB.WebAddress, settingsInfluxDB.Token);
-                var writeApiAsync = client.GetWriteApiAsync();
+            //Create Connection to InfluxDB
+            using var client = new InfluxDB.Client.InfluxDBClient(settingsInfluxDB.WebAddress, settingsInfluxDB.Token);
+            var writeApiAsync = client.GetWriteApiAsync();
 
-                //Create measuring point for transfer to the DB
-                var point = PointData
-                    .Measurement(temperature.SensorName)
-                    .Field("temperature", temperature.Temperature)
-                    .Field("humidity", temperature.Humidity)
-                    .Timestamp(DateTime.Now, InfluxDB.Client.Api.Domain.WritePrecision.Ms);
+            //Create measuring point for transfer to the DB
+            var point = PointData
+                .Measurement(temperature.SensorName)
+                .Field("temperature", temperature.Temperature)
+                .Field("humidity", temperature.Humidity)
+                .Timestamp(DateTime.Now, InfluxDB.Client.Api.Domain.WritePrecision.Ms);
 
-                //Write measuring point in DB
-                await writeApiAsync.WritePointAsync(point, settingsInfluxDB.Bucket, settingsInfluxDB.Org);
+            //Write measuring point in DB
+            await writeApiAsync.WritePointAsync(point, settingsInfluxDB.Bucket, settingsInfluxDB.Org);
 
-                client.Dispose();
-            }
-            catch (Exception ex)
-            {
-                //TODO -> Reacting to errors
-            }
+            client.Dispose();
         }
     }
 }

@@ -16,6 +16,6 @@
         /// <summary>
         /// Humidity
         /// </summary>
-        public int Humidity { get; set; }
+        public double Humidity { get; set; }
     }
 }
