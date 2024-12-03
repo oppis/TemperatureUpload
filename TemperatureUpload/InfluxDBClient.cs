@@ -17,13 +17,17 @@ namespace TemperatureUpload
         /// <param name="humidity">Humidity value emitted</param>
         public static async void SaveTemperatureData(TemperatureModel temperature)
         {
+            Console.WriteLine("Es wird die Temperatur in InfluxDB gespeichert!");
+            
             //Get Current Settings for InfluxDB
             Models.InfluxDB settingsInfluxDB = Program.SettingsRead.InfluxDB;
-                
+            
+            Console.WriteLine("Es wird eine Verbindung zur folgender InfluxDB hergestellt: " + settingsInfluxDB.WebAddress);
+
             //Create Connection to InfluxDB
             using var client = new InfluxDB.Client.InfluxDBClient(settingsInfluxDB.WebAddress, settingsInfluxDB.Token);
             var writeApiAsync = client.GetWriteApiAsync();
-
+                        
             //Create measuring point for transfer to the DB
             var point = PointData
                 .Measurement(temperature.SensorName)
@@ -35,6 +39,8 @@ namespace TemperatureUpload
             await writeApiAsync.WritePointAsync(point, settingsInfluxDB.Bucket, settingsInfluxDB.Org);
 
             client.Dispose();
+
+            Console.WriteLine("Der Temperaturwert wurde in der InfluxDB gespeichert!");
         }
     }
 }

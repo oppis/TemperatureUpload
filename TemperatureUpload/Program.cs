@@ -35,7 +35,7 @@ namespace TemperatureUpload
             }
             catch (Exception ex)
             {
-                WriteLog(ex.Message, ex.StackTrace);
+                WriteErrorLog(ex.Message, ex.StackTrace);
             }
         }
 
@@ -53,7 +53,12 @@ namespace TemperatureUpload
 
             if (!String.IsNullOrEmpty(SettingsRead.InfluxDB.WebAddress))
             {
+                Console.WriteLine("Es wurde eine InfluxDB Datenbank angeben! Es werden die Werte in der Datenbank gesichert!");
                 InfluxDBClient.SaveTemperatureData(currentSensorValues);
+            }
+            else
+            {
+                Console.WriteLine("Es wurden kein Influx DB Server angeben die Werte werden nicht gespeichert!");
             }
 
             Thread.Sleep(currentSensor.ReadInterval);
@@ -70,9 +75,8 @@ namespace TemperatureUpload
             string currentPath = Path.Combine(AppContext.BaseDirectory, "Settings.json");
 
             Console.WriteLine($"{currentPath}");
-            string settingsJson = File.ReadAllText(currentPath);
-
-            SettingsRead = JsonSerializer.Deserialize<Settings>(settingsJson);
+            string currentfile = File.ReadAllText(currentPath);
+            SettingsRead = JsonSerializer.Deserialize<Settings>(currentfile);
 
             Console.WriteLine("Es wurden die Einstellungen geladen!");
         }
@@ -80,18 +84,14 @@ namespace TemperatureUpload
         /// <summary>
         /// Write Error Message to Log
         /// </summary>
-        private static void WriteLog(string ErrorMessage, string ErrorStackTrace)
+        private static void WriteErrorLog(string ErrorMessage, string ErrorStackTrace)
         {
             DateTime dateTime = DateTime.Now;
-            
+
             string currentLogName = dateTime.ToString("dd-MM-yyy_HHmm") + ".txt";
             string currentLogPath = Path.Combine(AppContext.BaseDirectory, currentLogName);
 
-            string[] errorLog = new string[2];
-            errorLog[0] = ErrorMessage;
-            errorLog[1] = Environment.NewLine;
-            errorLog[2] = ErrorStackTrace;
-
+            string[] errorLog = [ErrorMessage, Environment.NewLine, ErrorStackTrace];
             File.WriteAllLines(currentLogPath, errorLog);
         }
     }
